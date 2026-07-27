@@ -6,9 +6,6 @@ class SubscriptionCatalog {
   /// Display name
   final String name;
 
-  /// Local asset path
-  final String logoAsset;
-
   /// Brand color
   final int brandColor;
 
@@ -33,10 +30,14 @@ class SubscriptionCatalog {
   /// Whether this service is featured.
   final bool featured;
 
+  String get logoAsset => 'assets/logos/$id.png';
+
+  String get logoSvg => 'assets/logos/$id.svg';
+
   const SubscriptionCatalog({
     required this.id,
     required this.name,
-    required this.logoAsset,
+
     required this.brandColor,
     required this.category,
     required this.website,
@@ -63,7 +64,6 @@ class SubscriptionCatalog {
     return SubscriptionCatalog(
       id: id ?? this.id,
       name: name ?? this.name,
-      logoAsset: logoAsset ?? this.logoAsset,
       brandColor: brandColor ?? this.brandColor,
       category: category ?? this.category,
       website: website ?? this.website,
@@ -79,7 +79,6 @@ class SubscriptionCatalog {
     return SubscriptionCatalog(
       id: json['id'],
       name: json['name'],
-      logoAsset: json['logoAsset'],
       brandColor: json['brandColor'],
       category: SubscriptionCategory.values.firstWhere((e) => e.name == json['category']),
       website: json['website'],

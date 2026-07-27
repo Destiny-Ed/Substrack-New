@@ -1,0 +1,45 @@
+[
+  {
+    "id": "netflix",
+    "name": "Netflix",
+    "brandColor": 4291348680,
+    "category": "streaming",
+    "website": "https://netflix.com",
+    "billingCycle": "monthly",
+    "featured": true,
+    "keywords": [
+      "movies",
+      "tv",
+      "streaming"
+    ]
+  },
+  {
+    "id": "spotify",
+    "name": "Spotify",
+    "brandColor": 4282366766,
+    "category": "music",
+    "website": "https://spotify.com",
+    "billingCycle": "monthly",
+    "featured": true,
+    "keywords": [
+      "music",
+      "songs",
+      "audio"
+    ]
+  },
+  {
+    "id": "chatgpt",
+    "name": "ChatGPT",
+    "brandColor": 4279703853,
+    "category": "ai",
+    "website": "https://chatgpt.com",
+    "billingCycle": "monthly",
+    "featured": true,
+    "keywords": [
+      "ai",
+      "openai",
+      "gpt",
+      "assistant"
+    ]
+  }
+]
