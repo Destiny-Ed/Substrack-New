@@ -1,6 +1,16 @@
+import 'package:flutter/foundation.dart';
+import 'package:isar_community/isar.dart';
 import 'package:subtrack/data/enums.dart';
 
+import 'package:uuid/uuid.dart';
+
+part 'subscription_models.g.dart';
+
+@collection
 class Subscription {
+  Id isarId = Isar.autoIncrement;
+
+  @Index(unique: true, replace: true)
   final String id;
 
   final String name;
@@ -9,6 +19,8 @@ class Subscription {
 
   final int brandColor;
 
+  @Enumerated(EnumType.name)
+  @Index()
   final SubscriptionCategory category;
 
   final double price;
@@ -16,8 +28,10 @@ class Subscription {
   /// ISO currency code (USD, NGN, EUR...)
   final String currency;
 
+  @Enumerated(EnumType.name)
   final BillingCycle billingCycle;
 
+  @Index()
   final DateTime renewalDate;
 
   /// Whether this is currently a free trial
@@ -26,6 +40,8 @@ class Subscription {
   /// Trial expiration date
   final DateTime? trialEndDate;
 
+  @Enumerated(EnumType.name)
+  @Index()
   final SubscriptionStatus status;
 
   /// Days before renewal to remind the user.
@@ -43,7 +59,7 @@ class Subscription {
   /// Whether the subscription automatically renews.
   final bool autoRenew;
 
-  /// Soft delete.
+  @Index()
   final bool isArchived;
 
   final DateTime? cancelledAt;
@@ -54,7 +70,8 @@ class Subscription {
 
   final DateTime updatedAt;
 
-  const Subscription({
+  Subscription({
+    this.isarId = Isar.autoIncrement,
     required this.id,
     required this.name,
     this.logoAsset,
@@ -77,6 +94,51 @@ class Subscription {
     required this.createdAt,
     required this.updatedAt,
   });
+
+  bool get isCancelled => status == SubscriptionStatus.cancelled;
+
+  bool get isExpired => renewalDate.isBefore(DateTime.now());
+
+  bool get hasTrial => trialEndDate != null;
+
+  bool get hasNotes => notes?.isNotEmpty ?? false;
+
+  int get daysUntilRenewal {
+    return renewalDate.difference(DateTime.now()).inDays;
+  }
+
+  bool get renewsToday => daysUntilRenewal == 0;
+
+  bool get renewsThisWeek => daysUntilRenewal >= 0 && daysUntilRenewal <= 7;
+
+  factory Subscription.create({
+    required String name,
+    required SubscriptionCategory category,
+    required double price,
+    required String currency,
+    required BillingCycle billingCycle,
+    required DateTime renewalDate,
+  }) {
+    final now = DateTime.now();
+
+    return Subscription(
+      id: const Uuid().v4(),
+      name: name,
+      logoAsset: null,
+      brandColor: 0xFF2196F3,
+      category: category,
+      price: price,
+      currency: currency,
+      billingCycle: billingCycle,
+      renewalDate: renewalDate,
+      isTrial: false,
+      status: SubscriptionStatus.active,
+      reminderDays: const [7, 3, 1, 0],
+      autoRenew: true,
+      createdAt: now,
+      updatedAt: now,
+    );
+  }
 
   Subscription copyWith({
     String? id,
@@ -199,7 +261,8 @@ class Subscription {
             isTrial == other.isTrial &&
             trialEndDate == other.trialEndDate &&
             status == other.status &&
-            reminderDays.toString() == other.reminderDays.toString() &&
+            // reminderDays.toString() == other.reminderDays.toString() &&
+            listEquals(reminderDays, other.reminderDays) &&
             website == other.website &&
             notes == other.notes &&
             autoRenew == other.autoRenew &&

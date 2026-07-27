@@ -1,4 +1,4 @@
-import 'package:subtrack/data/models/subscriptions/subscription_service.dart';
+import 'package:subtrack/data/models/subscriptions/subscription_catalog.dart';
 
 abstract class SubscriptionCatalogRepository {
   Future<List<SubscriptionCatalog>> getAll();
