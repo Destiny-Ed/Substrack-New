@@ -5,7 +5,7 @@ import 'package:subtrack/data/repositories/subscription/subscription_catalog_rep
 import 'package:subtrack/data/repositories/subscription/subscription_repository.dart';
 
 import '../../../../core/di/injection.dart';
-import '../../../../data/enums.dart';
+import '../../../core/enums.dart';
 import '../../../../data/models/subscriptions/subscription_models.dart';
 
 class AddSubscriptionViewModel extends ChangeNotifier {
@@ -60,6 +60,12 @@ class AddSubscriptionViewModel extends ChangeNotifier {
   void search(String value) {
     _searchQuery = value;
 
+    notifyListeners();
+  }
+
+  void resetSearch() {
+    _searchQuery = '';
+    // _filteredServices = _allServices;
     notifyListeners();
   }
 

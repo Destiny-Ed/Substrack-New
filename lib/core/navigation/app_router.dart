@@ -2,6 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:subtrack/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:subtrack/features/onboarding/presentation/splash_screen.dart';
 import 'package:subtrack/features/subscriptions/presentations/add_subscription.dart';
+import 'package:subtrack/features/summary/presentation/summary_screen.dart';
 import 'app_routes.dart';
 
 final appRouter = GoRouter(

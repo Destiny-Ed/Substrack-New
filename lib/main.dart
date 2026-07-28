@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:subtrack/core/di/injection.dart';
 import 'package:subtrack/core/navigation/app_router.dart';
-import 'package:subtrack/data/enums.dart';
+import 'package:subtrack/core/enums.dart';
 import 'package:subtrack/data/models/subscriptions/subscription_models.dart';
 import 'package:subtrack/data/repositories/subscription/subscription_repository.dart';
 

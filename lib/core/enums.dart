@@ -20,3 +20,5 @@ enum SubscriptionCategory {
 }
 
 enum ReminderOffset { sameDay, oneDay, threeDays, sevenDays, fourteenDays, thirtyDays }
+
+enum AddSubscriptionAction { addAnother, continueToPaywall }

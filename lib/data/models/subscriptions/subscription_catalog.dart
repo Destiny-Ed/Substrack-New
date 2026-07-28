@@ -1,4 +1,4 @@
-import 'package:subtrack/data/enums.dart';
+import 'package:subtrack/core/enums.dart';
 
 class SubscriptionCatalog {
   final String id;

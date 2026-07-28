@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../../data/enums.dart';
+import '../../../core/enums.dart';
 
 class CategoryHeader extends StatelessWidget {
   final SubscriptionCategory category;

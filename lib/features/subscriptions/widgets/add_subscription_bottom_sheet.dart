@@ -4,7 +4,7 @@ import 'package:subtrack/core/widgets/app_selection_bottom_sheet.dart';
 import 'package:subtrack/data/models/subscriptions/subscription_catalog.dart';
 import 'package:subtrack/features/subscriptions/view_models/add_subscription_vm.dart';
 
-import '../../../../data/enums.dart';
+import '../../../core/enums.dart';
 
 Future<bool?> showAddSubscriptionBottomSheet(
   BuildContext context, {
@@ -87,7 +87,7 @@ class _AddSubscriptionBottomSheetState extends State<AddSubscriptionBottomSheet>
   }
 
   Future<void> _save() async {
-    if (!_formKey.currentState!.validate()) {
+    if (!_formKey.currentState!.validate() || _saving) {
       return;
     }
 
@@ -141,29 +141,71 @@ class _AddSubscriptionBottomSheetState extends State<AddSubscriptionBottomSheet>
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 20,
-        right: 20,
-        top: 12,
-        bottom: MediaQuery.of(context).viewInsets.bottom + 24,
-      ),
-      child: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            spacing: 20,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                _isCustom ? 'Create Subscription' : widget.catalog!.name,
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 12,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+        ),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              spacing: 20,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  _isCustom ? 'Create Subscription' : widget.catalog!.name,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
 
-              if (_isCustom)
+                if (_isCustom)
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(labelText: 'Subscription Name'),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Required';
+                      }
+
+                      return null;
+                    },
+                  ),
+
+                if (_isCustom)
+                  InkWell(
+                    onTap: () async {
+                      final category = await showAppSelectionBottomSheet(
+                        context: context,
+                        title: 'Subscription Category',
+                        items: SubscriptionCategory.values,
+                        selectedValue: _category,
+                        labelBuilder: (e) => e.name,
+                      );
+
+                      if (category == null) return;
+
+                      setState(() {
+                        _category = category;
+                      });
+                    },
+                    child: InputDecorator(
+                      decoration: const InputDecoration(labelText: 'Category'),
+                      child: Row(
+                        children: [
+                          Expanded(child: Text(_category.name)),
+                          const Icon(Icons.keyboard_arrow_down),
+                        ],
+                      ),
+                    ),
+                  ),
                 TextFormField(
-                  controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Subscription Name'),
+                  controller: _priceController,
+                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  decoration: const InputDecoration(labelText: 'Price', prefixText: '\$ '),
                   validator: (value) {
                     if (value == null || value.trim().isEmpty) {
                       return 'Required';
@@ -173,140 +215,101 @@ class _AddSubscriptionBottomSheetState extends State<AddSubscriptionBottomSheet>
                   },
                 ),
 
-              if (_isCustom)
                 InkWell(
                   onTap: () async {
-                    final category = await showAppSelectionBottomSheet(
+                    final currency = await showAppSelectionBottomSheet(
                       context: context,
-                      title: 'Subscription Category',
-                      items: SubscriptionCategory.values,
-                      selectedValue: _category,
-                      labelBuilder: (e) => e.name,
+                      title: 'Currency',
+                      items: const ['USD', 'EUR', 'GBP', 'NGN'],
+                      selectedValue: _currency,
+                      labelBuilder: (e) => e,
                     );
 
-                    if (category == null) return;
+                    if (currency == null) return;
 
                     setState(() {
-                      _category = category;
+                      _currency = currency;
                     });
                   },
                   child: InputDecorator(
-                    decoration: const InputDecoration(labelText: 'Category'),
+                    decoration: const InputDecoration(labelText: 'Currency'),
                     child: Row(
                       children: [
-                        Expanded(child: Text(_category.name)),
+                        Expanded(child: Text(_currency)),
                         const Icon(Icons.keyboard_arrow_down),
                       ],
                     ),
                   ),
                 ),
-              TextFormField(
-                controller: _priceController,
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                decoration: const InputDecoration(labelText: 'Price', prefixText: '\$ '),
-                validator: (value) {
-                  if (value == null || value.trim().isEmpty) {
-                    return 'Required';
-                  }
 
-                  return null;
-                },
-              ),
+                InkWell(
+                  onTap: () async {
+                    final cycle = await showAppSelectionBottomSheet(
+                      context: context,
+                      title: 'Billing Cycle',
+                      items: BillingCycle.values,
+                      selectedValue: _billingCycle,
+                      labelBuilder: (e) => e.name,
+                    );
 
-              InkWell(
-                onTap: () async {
-                  final currency = await showAppSelectionBottomSheet(
-                    context: context,
-                    title: 'Currency',
-                    items: const ['USD', 'EUR', 'GBP', 'NGN'],
-                    selectedValue: _currency,
-                    labelBuilder: (e) => e,
-                  );
+                    if (cycle == null) return;
 
-                  if (currency == null) return;
-
-                  setState(() {
-                    _currency = currency;
-                  });
-                },
-                child: InputDecorator(
-                  decoration: const InputDecoration(labelText: 'Currency'),
-                  child: Row(
-                    children: [
-                      Expanded(child: Text(_currency)),
-                      const Icon(Icons.keyboard_arrow_down),
-                    ],
-                  ),
-                ),
-              ),
-
-              InkWell(
-                onTap: () async {
-                  final cycle = await showAppSelectionBottomSheet(
-                    context: context,
-                    title: 'Billing Cycle',
-                    items: BillingCycle.values,
-                    selectedValue: _billingCycle,
-                    labelBuilder: (e) => e.name,
-                  );
-
-                  if (cycle == null) return;
-
-                  setState(() {
-                    _billingCycle = cycle;
-                  });
-                },
-                child: InputDecorator(
-                  decoration: const InputDecoration(labelText: 'Billing Cycle'),
-                  child: Row(
-                    children: [
-                      Expanded(child: Text(_billingCycle.name)),
-                      const Icon(Icons.keyboard_arrow_down),
-                    ],
-                  ),
-                ),
-              ),
-
-              Material(
-                color: Colors.transparent,
-                child: ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Renewal Date'),
-                  subtitle: Text("${_renewalDate.day}/${_renewalDate.month}/${_renewalDate.year}"),
-                  trailing: const Icon(Icons.calendar_month),
-                  onTap: _pickRenewalDate,
-                ),
-              ),
-
-              Material(
-                color: Colors.transparent,
-
-                child: SwitchListTile(
-                  contentPadding: EdgeInsets.zero,
-                  title: const Text('Auto Renew'),
-                  value: _autoRenew,
-                  onChanged: (value) {
                     setState(() {
-                      _autoRenew = value;
+                      _billingCycle = cycle;
                     });
                   },
+                  child: InputDecorator(
+                    decoration: const InputDecoration(labelText: 'Billing Cycle'),
+                    child: Row(
+                      children: [
+                        Expanded(child: Text(_billingCycle.name)),
+                        const Icon(Icons.keyboard_arrow_down),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
 
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: _save,
-                  child: _saving
-                      ? const SizedBox(
-                          width: 20,
-                          height: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Text('Save Subscription'),
+                Material(
+                  color: Colors.transparent,
+                  child: ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text('Renewal Date'),
+                    subtitle: Text("${_renewalDate.day}/${_renewalDate.month}/${_renewalDate.year}"),
+                    trailing: const Icon(Icons.calendar_month),
+                    onTap: _pickRenewalDate,
+                  ),
                 ),
-              ),
-            ],
+
+                Material(
+                  color: Colors.transparent,
+
+                  child: SwitchListTile(
+                    contentPadding: EdgeInsets.zero,
+                    title: const Text('Auto Renew'),
+                    value: _autoRenew,
+                    onChanged: (value) {
+                      setState(() {
+                        _autoRenew = value;
+                      });
+                    },
+                  ),
+                ),
+
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: _save,
+                    child: _saving
+                        ? const SizedBox(
+                            width: 20,
+                            height: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          )
+                        : const Text('Save Subscription'),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

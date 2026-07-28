@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:isar_community/isar.dart';
-import 'package:subtrack/data/enums.dart';
+import 'package:subtrack/core/enums.dart';
 
 import 'package:uuid/uuid.dart';
 

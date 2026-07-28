@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:subtrack/data/enums.dart';
+import 'package:subtrack/core/enums.dart';
 import 'package:subtrack/data/models/subscriptions/subscription_catalog.dart';
 
 class SubscriptionCatalogLocalDataSource {
