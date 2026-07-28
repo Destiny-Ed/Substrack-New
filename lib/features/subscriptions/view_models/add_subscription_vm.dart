@@ -26,18 +26,18 @@ class AddSubscriptionViewModel extends ChangeNotifier {
 
   String get searchQuery => _searchQuery;
 
-  final List<SubscriptionCatalog> _services = [];
+  final List<SubscriptionCatalog> _catalogs = [];
 
-  List<SubscriptionCatalog> get services => List.unmodifiable(_services);
+  List<SubscriptionCatalog> get catalogs => List.unmodifiable(_catalogs);
 
   List<SubscriptionCatalog> get filteredServices {
     if (_searchQuery.trim().isEmpty) {
-      return services;
+      return catalogs;
     }
 
     final query = _searchQuery.toLowerCase();
 
-    return _services.where((service) {
+    return _catalogs.where((service) {
       return service.name.toLowerCase().contains(query) ||
           service.category.name.toLowerCase().contains(query);
     }).toList();
@@ -50,7 +50,7 @@ class AddSubscriptionViewModel extends ChangeNotifier {
   Future<void> load() async {
     _setLoading(true);
 
-    _services
+    _catalogs
       ..clear()
       ..addAll(await _catalogRepository.getAll());
 

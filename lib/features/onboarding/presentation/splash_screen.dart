@@ -26,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
     if (!mounted) return;
 
     if (prefs.hasCompletedOnboarding) {
-      context.go(AppRoutes.dashboard);
+      context.go(AppRoutes.addSubscription);
     } else {
       context.go(AppRoutes.onboarding);
     }

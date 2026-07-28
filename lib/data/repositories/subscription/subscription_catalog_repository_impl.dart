@@ -1,27 +1,31 @@
+import 'package:subtrack/data/datasources/local/subscription_catalog_local_data_source.dart';
 import 'package:subtrack/data/models/subscriptions/subscription_catalog.dart';
 
 import 'subscription_catalog_repository.dart';
 
 class SubscriptionCatalogRepositoryImpl implements SubscriptionCatalogRepository {
-  final List<SubscriptionCatalog> _subscriptions;
+  final SubscriptionCatalogLocalDataSource _dataSource;
 
-  const SubscriptionCatalogRepositoryImpl({required List<SubscriptionCatalog> subscriptions})
-    : _subscriptions = subscriptions;
+  const SubscriptionCatalogRepositoryImpl({required SubscriptionCatalogLocalDataSource dataSource})
+    : _dataSource = dataSource;
 
   @override
   Future<List<SubscriptionCatalog>> getAll() async {
-    return List.unmodifiable(_subscriptions);
+    return _dataSource.load();
   }
 
   @override
   Future<List<SubscriptionCatalog>> getFeatured() async {
-    return _subscriptions.where((subscription) => subscription.featured).toList(growable: false);
+    final subscription = await getAll();
+    return subscription.where((subscription) => subscription.featured).toList(growable: false);
   }
 
   @override
   Future<SubscriptionCatalog?> findById(String id) async {
     try {
-      return _subscriptions.firstWhere((subscription) => subscription.id == id);
+      final subscription = await getAll();
+
+      return subscription.firstWhere((subscription) => subscription.id == id);
     } catch (_) {
       return null;
     }
@@ -35,13 +39,15 @@ class SubscriptionCatalogRepositoryImpl implements SubscriptionCatalogRepository
       return getFeatured();
     }
 
-    return _subscriptions
-        .where((subscription) {
-          if (subscription.name.toLowerCase().contains(search)) {
+    final subscription = await getAll();
+
+    return subscription
+        .where((sub) {
+          if (sub.name.toLowerCase().contains(search)) {
             return true;
           }
 
-          return subscription.keywords.any((keyword) => keyword.toLowerCase().contains(search));
+          return sub.keywords.any((keyword) => keyword.toLowerCase().contains(search));
         })
         .toList(growable: false);
   }

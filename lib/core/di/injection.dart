@@ -1,6 +1,9 @@
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:subtrack/data/datasources/local/subscription_catalog_local_data_source.dart';
 import 'package:subtrack/data/preferences/app_preferences.dart';
+import 'package:subtrack/data/repositories/subscription/subscription_catalog_repository.dart';
+import 'package:subtrack/data/repositories/subscription/subscription_catalog_repository_impl.dart';
 import 'package:subtrack/data/repositories/subscription/subscription_repository.dart';
 import 'package:subtrack/data/repositories/subscription/subscription_repository_impl.dart';
 
@@ -13,6 +16,12 @@ Future<void> setupInjection() async {
 
   getIt.registerLazySingleton<SubscriptionRepository>(
     () => SubscriptionRepositoryImpl(database: getIt<IsarDatabase>()),
+  );
+
+  getIt.registerLazySingleton<SubscriptionCatalogLocalDataSource>(() => SubscriptionCatalogLocalDataSource());
+
+  getIt.registerLazySingleton<SubscriptionCatalogRepository>(
+    () => SubscriptionCatalogRepositoryImpl(dataSource: getIt<SubscriptionCatalogLocalDataSource>()),
   );
 
   //
