@@ -44,91 +44,96 @@ const SubscriptionSchema = CollectionSchema(
       type: IsarType.string,
       enumMap: _SubscriptioncategoryEnumValueMap,
     ),
-    r'createdAt': PropertySchema(
+    r'collectionId': PropertySchema(
       id: 5,
+      name: r'collectionId',
+      type: IsarType.string,
+    ),
+    r'createdAt': PropertySchema(
+      id: 6,
       name: r'createdAt',
       type: IsarType.dateTime,
     ),
     r'currency': PropertySchema(
-      id: 6,
+      id: 7,
       name: r'currency',
       type: IsarType.string,
     ),
     r'daysUntilRenewal': PropertySchema(
-      id: 7,
+      id: 8,
       name: r'daysUntilRenewal',
       type: IsarType.long,
     ),
-    r'hasNotes': PropertySchema(id: 8, name: r'hasNotes', type: IsarType.bool),
-    r'hasTrial': PropertySchema(id: 9, name: r'hasTrial', type: IsarType.bool),
-    r'hashCode': PropertySchema(id: 10, name: r'hashCode', type: IsarType.long),
-    r'id': PropertySchema(id: 11, name: r'id', type: IsarType.string),
+    r'hasNotes': PropertySchema(id: 9, name: r'hasNotes', type: IsarType.bool),
+    r'hasTrial': PropertySchema(id: 10, name: r'hasTrial', type: IsarType.bool),
+    r'hashCode': PropertySchema(id: 11, name: r'hashCode', type: IsarType.long),
+    r'id': PropertySchema(id: 12, name: r'id', type: IsarType.string),
     r'isArchived': PropertySchema(
-      id: 12,
+      id: 13,
       name: r'isArchived',
       type: IsarType.bool,
     ),
     r'isCancelled': PropertySchema(
-      id: 13,
+      id: 14,
       name: r'isCancelled',
       type: IsarType.bool,
     ),
     r'isExpired': PropertySchema(
-      id: 14,
+      id: 15,
       name: r'isExpired',
       type: IsarType.bool,
     ),
-    r'isTrial': PropertySchema(id: 15, name: r'isTrial', type: IsarType.bool),
+    r'isTrial': PropertySchema(id: 16, name: r'isTrial', type: IsarType.bool),
     r'lastNotifiedAt': PropertySchema(
-      id: 16,
+      id: 17,
       name: r'lastNotifiedAt',
       type: IsarType.dateTime,
     ),
     r'logoAsset': PropertySchema(
-      id: 17,
+      id: 18,
       name: r'logoAsset',
       type: IsarType.string,
     ),
-    r'name': PropertySchema(id: 18, name: r'name', type: IsarType.string),
-    r'notes': PropertySchema(id: 19, name: r'notes', type: IsarType.string),
-    r'price': PropertySchema(id: 20, name: r'price', type: IsarType.double),
+    r'name': PropertySchema(id: 19, name: r'name', type: IsarType.string),
+    r'notes': PropertySchema(id: 20, name: r'notes', type: IsarType.string),
+    r'price': PropertySchema(id: 21, name: r'price', type: IsarType.double),
     r'reminderDays': PropertySchema(
-      id: 21,
+      id: 22,
       name: r'reminderDays',
       type: IsarType.longList,
     ),
     r'renewalDate': PropertySchema(
-      id: 22,
+      id: 23,
       name: r'renewalDate',
       type: IsarType.dateTime,
     ),
     r'renewsThisWeek': PropertySchema(
-      id: 23,
+      id: 24,
       name: r'renewsThisWeek',
       type: IsarType.bool,
     ),
     r'renewsToday': PropertySchema(
-      id: 24,
+      id: 25,
       name: r'renewsToday',
       type: IsarType.bool,
     ),
     r'status': PropertySchema(
-      id: 25,
+      id: 26,
       name: r'status',
       type: IsarType.string,
       enumMap: _SubscriptionstatusEnumValueMap,
     ),
     r'trialEndDate': PropertySchema(
-      id: 26,
+      id: 27,
       name: r'trialEndDate',
       type: IsarType.dateTime,
     ),
     r'updatedAt': PropertySchema(
-      id: 27,
+      id: 28,
       name: r'updatedAt',
       type: IsarType.dateTime,
     ),
-    r'website': PropertySchema(id: 28, name: r'website', type: IsarType.string),
+    r'website': PropertySchema(id: 29, name: r'website', type: IsarType.string),
   },
 
   estimateSize: _subscriptionEstimateSize,
@@ -220,6 +225,12 @@ int _subscriptionEstimateSize(
   var bytesCount = offsets.last;
   bytesCount += 3 + object.billingCycle.name.length * 3;
   bytesCount += 3 + object.category.name.length * 3;
+  {
+    final value = object.collectionId;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
   bytesCount += 3 + object.currency.length * 3;
   bytesCount += 3 + object.id.length * 3;
   {
@@ -257,30 +268,31 @@ void _subscriptionSerialize(
   writer.writeLong(offsets[2], object.brandColor);
   writer.writeDateTime(offsets[3], object.cancelledAt);
   writer.writeString(offsets[4], object.category.name);
-  writer.writeDateTime(offsets[5], object.createdAt);
-  writer.writeString(offsets[6], object.currency);
-  writer.writeLong(offsets[7], object.daysUntilRenewal);
-  writer.writeBool(offsets[8], object.hasNotes);
-  writer.writeBool(offsets[9], object.hasTrial);
-  writer.writeLong(offsets[10], object.hashCode);
-  writer.writeString(offsets[11], object.id);
-  writer.writeBool(offsets[12], object.isArchived);
-  writer.writeBool(offsets[13], object.isCancelled);
-  writer.writeBool(offsets[14], object.isExpired);
-  writer.writeBool(offsets[15], object.isTrial);
-  writer.writeDateTime(offsets[16], object.lastNotifiedAt);
-  writer.writeString(offsets[17], object.logoAsset);
-  writer.writeString(offsets[18], object.name);
-  writer.writeString(offsets[19], object.notes);
-  writer.writeDouble(offsets[20], object.price);
-  writer.writeLongList(offsets[21], object.reminderDays);
-  writer.writeDateTime(offsets[22], object.renewalDate);
-  writer.writeBool(offsets[23], object.renewsThisWeek);
-  writer.writeBool(offsets[24], object.renewsToday);
-  writer.writeString(offsets[25], object.status.name);
-  writer.writeDateTime(offsets[26], object.trialEndDate);
-  writer.writeDateTime(offsets[27], object.updatedAt);
-  writer.writeString(offsets[28], object.website);
+  writer.writeString(offsets[5], object.collectionId);
+  writer.writeDateTime(offsets[6], object.createdAt);
+  writer.writeString(offsets[7], object.currency);
+  writer.writeLong(offsets[8], object.daysUntilRenewal);
+  writer.writeBool(offsets[9], object.hasNotes);
+  writer.writeBool(offsets[10], object.hasTrial);
+  writer.writeLong(offsets[11], object.hashCode);
+  writer.writeString(offsets[12], object.id);
+  writer.writeBool(offsets[13], object.isArchived);
+  writer.writeBool(offsets[14], object.isCancelled);
+  writer.writeBool(offsets[15], object.isExpired);
+  writer.writeBool(offsets[16], object.isTrial);
+  writer.writeDateTime(offsets[17], object.lastNotifiedAt);
+  writer.writeString(offsets[18], object.logoAsset);
+  writer.writeString(offsets[19], object.name);
+  writer.writeString(offsets[20], object.notes);
+  writer.writeDouble(offsets[21], object.price);
+  writer.writeLongList(offsets[22], object.reminderDays);
+  writer.writeDateTime(offsets[23], object.renewalDate);
+  writer.writeBool(offsets[24], object.renewsThisWeek);
+  writer.writeBool(offsets[25], object.renewsToday);
+  writer.writeString(offsets[26], object.status.name);
+  writer.writeDateTime(offsets[27], object.trialEndDate);
+  writer.writeDateTime(offsets[28], object.updatedAt);
+  writer.writeString(offsets[29], object.website);
 }
 
 Subscription _subscriptionDeserialize(
@@ -303,25 +315,26 @@ Subscription _subscriptionDeserialize(
           offsets[4],
         )] ??
         SubscriptionCategory.streaming,
-    createdAt: reader.readDateTime(offsets[5]),
-    currency: reader.readString(offsets[6]),
-    id: reader.readString(offsets[11]),
-    isArchived: reader.readBoolOrNull(offsets[12]) ?? false,
-    isTrial: reader.readBool(offsets[15]),
+    collectionId: reader.readStringOrNull(offsets[5]),
+    createdAt: reader.readDateTime(offsets[6]),
+    currency: reader.readString(offsets[7]),
+    id: reader.readString(offsets[12]),
+    isArchived: reader.readBoolOrNull(offsets[13]) ?? false,
+    isTrial: reader.readBool(offsets[16]),
     isarId: id,
-    lastNotifiedAt: reader.readDateTimeOrNull(offsets[16]),
-    logoAsset: reader.readStringOrNull(offsets[17]),
-    name: reader.readString(offsets[18]),
-    notes: reader.readStringOrNull(offsets[19]),
-    price: reader.readDouble(offsets[20]),
-    reminderDays: reader.readLongList(offsets[21]) ?? [],
-    renewalDate: reader.readDateTime(offsets[22]),
+    lastNotifiedAt: reader.readDateTimeOrNull(offsets[17]),
+    logoAsset: reader.readStringOrNull(offsets[18]),
+    name: reader.readString(offsets[19]),
+    notes: reader.readStringOrNull(offsets[20]),
+    price: reader.readDouble(offsets[21]),
+    reminderDays: reader.readLongList(offsets[22]) ?? [],
+    renewalDate: reader.readDateTime(offsets[23]),
     status:
-        _SubscriptionstatusValueEnumMap[reader.readStringOrNull(offsets[25])] ??
+        _SubscriptionstatusValueEnumMap[reader.readStringOrNull(offsets[26])] ??
         SubscriptionStatus.active,
-    trialEndDate: reader.readDateTimeOrNull(offsets[26]),
-    updatedAt: reader.readDateTime(offsets[27]),
-    website: reader.readStringOrNull(offsets[28]),
+    trialEndDate: reader.readDateTimeOrNull(offsets[27]),
+    updatedAt: reader.readDateTime(offsets[28]),
+    website: reader.readStringOrNull(offsets[29]),
   );
   return object;
 }
@@ -352,56 +365,58 @@ P _subscriptionDeserializeProp<P>(
               SubscriptionCategory.streaming)
           as P;
     case 5:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 6:
-      return (reader.readString(offset)) as P;
+      return (reader.readDateTime(offset)) as P;
     case 7:
-      return (reader.readLong(offset)) as P;
+      return (reader.readString(offset)) as P;
     case 8:
-      return (reader.readBool(offset)) as P;
+      return (reader.readLong(offset)) as P;
     case 9:
       return (reader.readBool(offset)) as P;
     case 10:
-      return (reader.readLong(offset)) as P;
-    case 11:
-      return (reader.readString(offset)) as P;
-    case 12:
-      return (reader.readBoolOrNull(offset) ?? false) as P;
-    case 13:
       return (reader.readBool(offset)) as P;
+    case 11:
+      return (reader.readLong(offset)) as P;
+    case 12:
+      return (reader.readString(offset)) as P;
+    case 13:
+      return (reader.readBoolOrNull(offset) ?? false) as P;
     case 14:
       return (reader.readBool(offset)) as P;
     case 15:
       return (reader.readBool(offset)) as P;
     case 16:
-      return (reader.readDateTimeOrNull(offset)) as P;
-    case 17:
-      return (reader.readStringOrNull(offset)) as P;
-    case 18:
-      return (reader.readString(offset)) as P;
-    case 19:
-      return (reader.readStringOrNull(offset)) as P;
-    case 20:
-      return (reader.readDouble(offset)) as P;
-    case 21:
-      return (reader.readLongList(offset) ?? []) as P;
-    case 22:
-      return (reader.readDateTime(offset)) as P;
-    case 23:
       return (reader.readBool(offset)) as P;
+    case 17:
+      return (reader.readDateTimeOrNull(offset)) as P;
+    case 18:
+      return (reader.readStringOrNull(offset)) as P;
+    case 19:
+      return (reader.readString(offset)) as P;
+    case 20:
+      return (reader.readStringOrNull(offset)) as P;
+    case 21:
+      return (reader.readDouble(offset)) as P;
+    case 22:
+      return (reader.readLongList(offset) ?? []) as P;
+    case 23:
+      return (reader.readDateTime(offset)) as P;
     case 24:
       return (reader.readBool(offset)) as P;
     case 25:
+      return (reader.readBool(offset)) as P;
+    case 26:
       return (_SubscriptionstatusValueEnumMap[reader.readStringOrNull(
                 offset,
               )] ??
               SubscriptionStatus.active)
           as P;
-    case 26:
-      return (reader.readDateTimeOrNull(offset)) as P;
     case 27:
-      return (reader.readDateTime(offset)) as P;
+      return (reader.readDateTimeOrNull(offset)) as P;
     case 28:
+      return (reader.readDateTime(offset)) as P;
+    case 29:
       return (reader.readStringOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
@@ -1373,6 +1388,165 @@ extension SubscriptionQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(
         FilterCondition.greaterThan(property: r'category', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
+  collectionIdIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNull(property: r'collectionId'),
+      );
+    });
+  }
+
+  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
+  collectionIdIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        const FilterCondition.isNotNull(property: r'collectionId'),
+      );
+    });
+  }
+
+  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
+  collectionIdEqualTo(String? value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(
+          property: r'collectionId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
+  collectionIdGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(
+          include: include,
+          property: r'collectionId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
+  collectionIdLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.lessThan(
+          include: include,
+          property: r'collectionId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
+  collectionIdBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.between(
+          property: r'collectionId',
+          lower: lower,
+          includeLower: includeLower,
+          upper: upper,
+          includeUpper: includeUpper,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
+  collectionIdStartsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.startsWith(
+          property: r'collectionId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
+  collectionIdEndsWith(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.endsWith(
+          property: r'collectionId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
+  collectionIdContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.contains(
+          property: r'collectionId',
+          value: value,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
+  collectionIdMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.matches(
+          property: r'collectionId',
+          wildcard: pattern,
+          caseSensitive: caseSensitive,
+        ),
+      );
+    });
+  }
+
+  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
+  collectionIdIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.equalTo(property: r'collectionId', value: ''),
+      );
+    });
+  }
+
+  QueryBuilder<Subscription, Subscription, QAfterFilterCondition>
+  collectionIdIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(
+        FilterCondition.greaterThan(property: r'collectionId', value: ''),
       );
     });
   }
@@ -3242,6 +3416,19 @@ extension SubscriptionQuerySortBy
     });
   }
 
+  QueryBuilder<Subscription, Subscription, QAfterSortBy> sortByCollectionId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'collectionId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Subscription, Subscription, QAfterSortBy>
+  sortByCollectionIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'collectionId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Subscription, Subscription, QAfterSortBy> sortByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
@@ -3595,6 +3782,19 @@ extension SubscriptionQuerySortThenBy
     });
   }
 
+  QueryBuilder<Subscription, Subscription, QAfterSortBy> thenByCollectionId() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'collectionId', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Subscription, Subscription, QAfterSortBy>
+  thenByCollectionIdDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'collectionId', Sort.desc);
+    });
+  }
+
   QueryBuilder<Subscription, Subscription, QAfterSortBy> thenByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'createdAt', Sort.asc);
@@ -3931,6 +4131,14 @@ extension SubscriptionQueryWhereDistinct
     });
   }
 
+  QueryBuilder<Subscription, Subscription, QDistinct> distinctByCollectionId({
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'collectionId', caseSensitive: caseSensitive);
+    });
+  }
+
   QueryBuilder<Subscription, Subscription, QDistinct> distinctByCreatedAt() {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'createdAt');
@@ -4131,6 +4339,12 @@ extension SubscriptionQueryProperty
   categoryProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'category');
+    });
+  }
+
+  QueryBuilder<Subscription, String?, QQueryOperations> collectionIdProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'collectionId');
     });
   }
 

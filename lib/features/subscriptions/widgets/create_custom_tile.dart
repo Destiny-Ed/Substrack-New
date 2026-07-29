@@ -14,33 +14,36 @@ class CreateCustomSubscriptionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: const CircleAvatar(child: Icon(Icons.add)),
-      title: Text('Create "$query"'),
-      subtitle: const Text('Add a custom subscription'),
-      onTap: () async {
-        final saved = await showAddSubscriptionBottomSheet(context, catalog: null, initialName: query);
-
-        if (!context.mounted || saved != true) {
-          return;
-        }
-
-        final action = await showSubscriptionAddedBottomSheet(context: context, serviceName: query);
-
-        if (!context.mounted || action == null) {
-          return;
-        }
-
-        switch (action) {
-          case AddSubscriptionAction.addAnother:
-            context.read<AddSubscriptionViewModel>().resetSearch();
-            break;
-
-          case AddSubscriptionAction.continueToPaywall:
-            context.go(AppRoutes.paywall);
-            break;
-        }
-      },
+    return Material(
+      color: Colors.transparent,
+      child: ListTile(
+        leading: const CircleAvatar(child: Icon(Icons.add)),
+        title: Text('Create "$query"'),
+        subtitle: const Text('Add a custom subscription'),
+        onTap: () async {
+          final saved = await showAddSubscriptionBottomSheet(context, catalog: null, initialName: query);
+      
+          if (!context.mounted || saved != true) {
+            return;
+          }
+      
+          final action = await showSubscriptionAddedBottomSheet(context: context, serviceName: query);
+      
+          if (!context.mounted || action == null) {
+            return;
+          }
+      
+          switch (action) {
+            case AddSubscriptionAction.addAnother:
+              context.read<AddSubscriptionViewModel>().resetSearch();
+              break;
+      
+            case AddSubscriptionAction.continueToPaywall:
+              context.go(AppRoutes.paywall);
+              break;
+          }
+        },
+      ),
     );
   }
 }

@@ -1,6 +1,6 @@
 enum SubscriptionStatus { active, cancelled, expired, paused }
 
-enum BillingCycle { weekly, monthly, quarterly, yearly, custom }
+enum BillingCycle { weekly, monthly, quarterly, yearly, custom, daily, semiAnnually }
 
 enum SubscriptionCategory {
   streaming,
@@ -17,6 +17,8 @@ enum SubscriptionCategory {
   business,
   health,
   other,
+  news,
+  entertainment,
 }
 
 enum ReminderOffset { sameDay, oneDay, threeDays, sevenDays, fourteenDays, thirtyDays }

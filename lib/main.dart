@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:subtrack/core/di/injection.dart';
 import 'package:subtrack/core/navigation/app_router.dart';
 import 'package:subtrack/core/enums.dart';
 import 'package:subtrack/data/models/subscriptions/subscription_models.dart';
 import 'package:subtrack/data/repositories/subscription/subscription_repository.dart';
+import 'package:subtrack/features/dashboard/view_models/dashboard_vm.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,6 +39,10 @@ class SubtrackApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(debugShowCheckedModeBanner: false, routerConfig: appRouter);
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => DashboardViewModel())],
+
+      child: MaterialApp.router(debugShowCheckedModeBanner: false, routerConfig: appRouter),
+    );
   }
 }

@@ -19,6 +19,8 @@ class Subscription {
 
   final int brandColor;
 
+  String? collectionId;
+
   @Enumerated(EnumType.name)
   @Index()
   final SubscriptionCategory category;
@@ -79,6 +81,7 @@ class Subscription {
     required this.category,
     required this.price,
     required this.currency,
+    this.collectionId,
     required this.billingCycle,
     required this.renewalDate,
     required this.isTrial,
@@ -148,6 +151,7 @@ class Subscription {
     SubscriptionCategory? category,
     double? price,
     String? currency,
+    String? collectionId,
     BillingCycle? billingCycle,
     DateTime? renewalDate,
     bool? isTrial,
@@ -170,6 +174,7 @@ class Subscription {
       brandColor: brandColor ?? this.brandColor,
       category: category ?? this.category,
       price: price ?? this.price,
+      collectionId: collectionId ?? this.collectionId,
       currency: currency ?? this.currency,
       billingCycle: billingCycle ?? this.billingCycle,
       renewalDate: renewalDate ?? this.renewalDate,
@@ -200,6 +205,7 @@ class Subscription {
       billingCycle: BillingCycle.values.firstWhere((e) => e.name == json['billingCycle']),
       renewalDate: DateTime.parse(json['renewalDate']),
       isTrial: json['isTrial'] as bool,
+      collectionId: json['collectionId'] as String?,
       trialEndDate: json['trialEndDate'] == null ? null : DateTime.parse(json['trialEndDate']),
       status: SubscriptionStatus.values.firstWhere((e) => e.name == json['status']),
       reminderDays: List<int>.from(json['reminderDays']),
@@ -223,6 +229,7 @@ class Subscription {
       'category': category.name,
       'price': price,
       'currency': currency,
+      'collectionId': collectionId,
       'billingCycle': billingCycle.name,
       'renewalDate': renewalDate.toIso8601String(),
       'isTrial': isTrial,
@@ -255,6 +262,7 @@ class Subscription {
             brandColor == other.brandColor &&
             category == other.category &&
             price == other.price &&
+            collectionId == other.collectionId &&
             currency == other.currency &&
             billingCycle == other.billingCycle &&
             renewalDate == other.renewalDate &&

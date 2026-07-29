@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:subtrack/features/dashboard/presentations/dashboard_screen.dart';
 import 'package:subtrack/features/onboarding/presentation/onboarding_screen.dart';
 import 'package:subtrack/features/onboarding/presentation/splash_screen.dart';
 import 'package:subtrack/features/subscriptions/presentations/add_subscription.dart';
@@ -13,6 +14,6 @@ final appRouter = GoRouter(
     GoRoute(path: AppRoutes.addSubscription, builder: (_, __) => const AddSubscriptionScreen()),
     // GoRoute(path: AppRoutes.summary, builder: (_, __) => const SummaryScreen()),
     // GoRoute(path: AppRoutes.paywall, builder: (_, __) => const PaywallScreen()),
-    // GoRoute(path: AppRoutes.dashboard, builder: (_, __) => const DashboardScreen()),
+    GoRoute(path: AppRoutes.dashboard, builder: (_, __) => const DashboardScreen()),
   ],
 );

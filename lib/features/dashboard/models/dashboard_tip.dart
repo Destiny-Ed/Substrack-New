@@ -1,0 +1,10 @@
+import 'package:flutter/material.dart';
+
+class DashboardTip {
+  final String title;
+  final String message;
+  final IconData icon;
+  final Color color;
+
+  const DashboardTip({required this.title, required this.message, required this.icon, required this.color});
+}

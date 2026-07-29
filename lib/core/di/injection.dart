@@ -6,6 +6,8 @@ import 'package:subtrack/data/repositories/subscription/subscription_catalog_rep
 import 'package:subtrack/data/repositories/subscription/subscription_catalog_repository_impl.dart';
 import 'package:subtrack/data/repositories/subscription/subscription_repository.dart';
 import 'package:subtrack/data/repositories/subscription/subscription_repository_impl.dart';
+import 'package:subtrack/features/purchase/repositories/fake_purchase_repository.dart';
+import 'package:subtrack/features/purchase/repositories/purchase_repository.dart';
 
 import '../database/isar_database.dart';
 
@@ -23,6 +25,8 @@ Future<void> setupInjection() async {
   getIt.registerLazySingleton<SubscriptionCatalogRepository>(
     () => SubscriptionCatalogRepositoryImpl(dataSource: getIt<SubscriptionCatalogLocalDataSource>()),
   );
+
+  getIt.registerLazySingleton<PurchaseRepository>(FakePurchaseRepository.new);
 
   //
   final sharedPreferences = await SharedPreferences.getInstance();
