@@ -12,4 +12,8 @@ class AppRoutes {
   static const paywall = '/paywall';
 
   static const dashboard = '/dashboard';
+
+  static const editSubscription = '/editSubscription';
+
+  static const subscriptionDetails = '/subscriptionDetails';
 }

@@ -123,7 +123,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
                       if (summary.trialsEndingSoon.isNotEmpty) ...[
                         const SizedBox(height: 28),
-                        TrialSection(subscriptions: summary.trialsEndingSoon),
+                        TrialSection(
+                          subscriptions: summary.trialsEndingSoon,
+                          onTap: (value) {
+                            context.push(AppRoutes.subscriptionDetails, extra: value.id);
+                          },
+                        ),
                       ],
 
                       if (summary.upcomingRenewals.isNotEmpty) ...[
@@ -139,11 +144,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           // Navigator.pushNamed(context, AppRoutes.subscriptions);
                         },
                         onSubscriptionTap: (subscription) {
-                          // Navigator.pushNamed(
-                          //   context,
-                          //   AppRoutes.subscriptionDetails,
-                          //   arguments: subscription,
-                          // );
+                          context.push(AppRoutes.subscriptionDetails, extra: subscription.id);
                         },
                       ),
 

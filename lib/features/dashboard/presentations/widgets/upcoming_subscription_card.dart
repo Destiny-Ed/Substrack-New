@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:subtrack/core/navigation/app_routes.dart';
 import 'package:subtrack/data/models/subscriptions/subscription_models.dart';
 
 class UpcomingSubscriptionCard extends StatelessWidget {
@@ -16,8 +18,7 @@ class UpcomingSubscriptionCard extends StatelessWidget {
     return InkWell(
       borderRadius: BorderRadius.circular(24),
       onTap: () {
-        // TODO
-        // Navigate to details
+        context.push(AppRoutes.subscriptionDetails, extra: subscription.id);
       },
       child: Container(
         width: 250,
@@ -34,9 +35,20 @@ class UpcomingSubscriptionCard extends StatelessWidget {
                 CircleAvatar(
                   radius: 24,
                   backgroundColor: Color(subscription.brandColor),
-                  child: Text(
-                    subscription.name.characters.first.toUpperCase(),
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                  child: CircleAvatar(
+                    radius: 38,
+                    backgroundColor: Color(subscription.brandColor),
+                    child: (subscription.logoAsset != null)
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(30),
+                            child: Image.asset(
+                              subscription.logoAsset!,
+                              width: 48,
+                              height: 48,
+                              fit: BoxFit.cover,
+                            ),
+                          )
+                        : Text(subscription.name.characters.first.toUpperCase()),
                   ),
                 ),
                 Spacer(),
@@ -77,7 +89,12 @@ class UpcomingSubscriptionCard extends StatelessWidget {
 
             const Spacer(),
 
-            FilledButton(onPressed: () {}, child: const Text("Review")),
+            FilledButton(
+              onPressed: () {
+                context.push(AppRoutes.subscriptionDetails, extra: subscription.id);
+              },
+              child: const Text("Review"),
+            ),
           ],
         ),
       ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:subtrack/core/navigation/app_routes.dart';
 import 'package:subtrack/data/models/subscriptions/subscription_models.dart';
 
 class TodaysAttentionCard extends StatelessWidget {
@@ -72,8 +74,7 @@ class TodaysAttentionCard extends StatelessWidget {
           ),
           FilledButton(
             onPressed: () {
-              // TODO:
-              // Navigate to Subscription Detail
+              context.push(AppRoutes.subscriptionDetails, extra: subscription?.id ?? "");
             },
             child: const Text("Review"),
           ),
