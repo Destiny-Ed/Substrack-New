@@ -24,3 +24,9 @@ enum SubscriptionCategory {
 enum ReminderOffset { sameDay, oneDay, threeDays, sevenDays, fourteenDays, thirtyDays }
 
 enum AddSubscriptionAction { addAnother, continueToPaywall }
+
+enum SubscriptionFilter { all, active, trial, cancelled, archived }
+
+enum SubscriptionSort { nextRenewal, name, price, newest, oldest }
+
+// enum SubscriptionSort { nextRenewal, alphabetical, highestPrice, lowestPrice, newest, oldest }

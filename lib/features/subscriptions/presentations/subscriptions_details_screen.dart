@@ -98,6 +98,7 @@ class _SubscriptionDetailsScreenState extends State<SubscriptionDetailsScreen> {
                   message:
                       "Subtrack only tracks your subscriptions. Cancelling, archiving or deleting a subscription here does not cancel it with the service provider.",
                 ),
+                const SizedBox(height: 10),
 
                 if (subscription.website != null)
                   InfoBanner(

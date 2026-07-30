@@ -141,7 +141,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       SubscriptionOverviewSection(
                         subscriptions: vm.subscriptions,
                         onSeeAll: () {
-                          // Navigator.pushNamed(context, AppRoutes.subscriptions);
+                          context.push(AppRoutes.subscriptions);
                         },
                         onSubscriptionTap: (subscription) {
                           context.push(AppRoutes.subscriptionDetails, extra: subscription.id);

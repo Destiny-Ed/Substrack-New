@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:subtrack/data/models/subscriptions/subscription_models.dart';
 
- 
 class TrialSubscriptionCard extends StatelessWidget {
   const TrialSubscriptionCard({super.key, required this.subscription, this.onTap});
 
@@ -34,10 +33,17 @@ class TrialSubscriptionCard extends StatelessWidget {
                 CircleAvatar(
                   radius: 22,
                   backgroundColor: Color(subscription.brandColor),
-                  child: Text(
-                    subscription.name.characters.first.toUpperCase(),
-                    style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
+                  child: (subscription.logoAsset != null)
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(30),
+                          child: Image.asset(
+                            subscription.logoAsset!,
+                            width: 48,
+                            height: 48,
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : Text(subscription.name.characters.first.toUpperCase()),
                 ),
 
                 const Spacer(),

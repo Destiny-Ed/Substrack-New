@@ -16,4 +16,6 @@ class AppRoutes {
   static const editSubscription = '/editSubscription';
 
   static const subscriptionDetails = '/subscriptionDetails';
+
+  static const subscriptions = '/subscriptions';
 }

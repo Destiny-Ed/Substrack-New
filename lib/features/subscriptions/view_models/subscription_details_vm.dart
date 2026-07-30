@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:subtrack/data/models/subscriptions/subscription_models.dart';
 import 'package:subtrack/data/repositories/subscription/subscription_repository.dart';
 
+
 class SubscriptionDetailsViewModel extends ChangeNotifier {
-  SubscriptionDetailsViewModel({required SubscriptionRepository repository}) : _repository = repository;
+  SubscriptionDetailsViewModel({SubscriptionRepository? repository}) : _repository = repository ?? GetIt.I<SubscriptionRepository>();
 
   final SubscriptionRepository _repository;
 

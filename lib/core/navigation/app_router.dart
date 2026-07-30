@@ -4,6 +4,7 @@ import 'package:subtrack/features/onboarding/presentation/onboarding_screen.dart
 import 'package:subtrack/features/onboarding/presentation/splash_screen.dart';
 import 'package:subtrack/features/subscriptions/presentations/add_subscription.dart';
 import 'package:subtrack/features/subscriptions/presentations/subscriptions_details_screen.dart';
+import 'package:subtrack/features/subscriptions/presentations/subscriptions_screen.dart';
 import 'package:subtrack/features/summary/presentation/summary_screen.dart';
 import 'app_routes.dart';
 
@@ -16,6 +17,7 @@ final appRouter = GoRouter(
     // GoRoute(path: AppRoutes.summary, builder: (_, __) => const SummaryScreen()),
     // GoRoute(path: AppRoutes.paywall, builder: (_, __) => const PaywallScreen()),
     GoRoute(path: AppRoutes.dashboard, builder: (_, __) => const DashboardScreen()),
+    GoRoute(path: AppRoutes.subscriptions, builder: (_, __) => const SubscriptionsScreen()),
     GoRoute(path: AppRoutes.subscriptionDetails, builder: (_, param) =>   SubscriptionDetailsScreen(
       subscriptionId: param.extra as String,
     )),
