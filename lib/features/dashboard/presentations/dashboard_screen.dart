@@ -58,7 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               }
             },
             icon: const Icon(Icons.add),
-            label: const Text("Add"),
+            label: const Text('Add'),
           ),
           body: SafeArea(
             child: Builder(
@@ -74,13 +74,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     onRefresh: _refresh,
                     child: ListView(
                       physics: const AlwaysScrollableScrollPhysics(),
-                      padding: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.fromLTRB(20, 20, 20, 100),
                       children: [
                         DashboardHeader(
                           summary: vm.summary,
-                          onSettingsTap: () {
-                            context.push(AppRoutes.settings);
-                          },
+                          onSettingsTap: () => context.go(AppRoutes.settings),
                         ),
                         const SizedBox(height: 24),
                         EmptyDashboard(
@@ -97,30 +95,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   onRefresh: _refresh,
                   child: ListView(
                     physics: const AlwaysScrollableScrollPhysics(),
-                    padding: const EdgeInsets.fromLTRB(10, 20, 10, 120),
+                    padding: const EdgeInsets.fromLTRB(10, 20, 10, 100),
                     children: [
                       DashboardHeader(
                         summary: vm.summary,
-                        onSettingsTap: () {
-                          context.push(AppRoutes.settings);
-                        },
+                        onSettingsTap: () => context.go(AppRoutes.settings),
                       ),
-
                       const SizedBox(height: 24),
-
                       TodaysAttentionCard(
                         subscription: summary.trialsEndingSoon.isNotEmpty
                             ? summary.trialsEndingSoon.first
                             : summary.upcomingRenewals.isNotEmpty
-                            ? summary.upcomingRenewals.first
-                            : null,
+                                ? summary.upcomingRenewals.first
+                                : null,
                         isTrial: summary.trialsEndingSoon.isNotEmpty,
                       ),
-
                       const SizedBox(height: 20),
-
-                      SpendingSummaryCard(summary: summary, currency: vm.defaultCurrency),
-
+                      SpendingSummaryCard(
+                        summary: summary,
+                        currency: vm.defaultCurrency,
+                      ),
                       if (summary.trialsEndingSoon.isNotEmpty) ...[
                         const SizedBox(height: 28),
                         TrialSection(
@@ -130,24 +124,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           },
                         ),
                       ],
-
                       if (summary.upcomingRenewals.isNotEmpty) ...[
                         const SizedBox(height: 28),
-                        UpcomingRenewalsSection(subscriptions: summary.upcomingRenewals),
+                        UpcomingRenewalsSection(
+                          subscriptions: summary.upcomingRenewals,
+                        ),
                       ],
-
                       const SizedBox(height: 28),
-
                       SubscriptionOverviewSection(
                         subscriptions: vm.subscriptions,
-                        onSeeAll: () {
-                          context.push(AppRoutes.subscriptions);
-                        },
+                        onSeeAll: () => context.go(AppRoutes.subscriptions),
                         onSubscriptionTap: (subscription) {
-                          context.push(AppRoutes.subscriptionDetails, extra: subscription.id);
+                          context.push(
+                            AppRoutes.subscriptionDetails,
+                            extra: subscription.id,
+                          );
                         },
                       ),
-
                       if (summary.spendingByCategory.isNotEmpty) ...[
                         const SizedBox(height: 28),
                         CategoryBreakdownCard(
@@ -155,9 +148,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           currency: vm.defaultCurrency,
                         ),
                       ],
-
                       const SizedBox(height: 28),
-
                       const SmartInsightCard(),
                     ],
                   ),
