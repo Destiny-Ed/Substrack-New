@@ -72,7 +72,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
-          SpiverAppBar(
+          SliverAppBar(
             pinned: true,
             floating: false,
             expandedHeight: 120,
@@ -180,7 +180,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       icon: Icons.help_outline_rounded,
                       iconColor: AppColors.info,
                       title: 'Help & FAQ',
-                      trailing: const Icon(Icons.chevron_right_rounded, size: 22
+                      trailing: const Icon(Icons.chevron_right_rounded, size: 22),
                       onTap: () {},
                     ),
                     const _Divider(),
