@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:subtrack/core/di/injection.dart';
 import 'package:subtrack/core/navigation/app_router.dart';
-import 'package:subtrack/core/enums.dart';
-import 'package:subtrack/data/models/subscriptions/subscription_models.dart';
-import 'package:subtrack/data/repositories/subscription/subscription_repository.dart';
+import 'package:subtrack/core/theme/app_theme.dart';
 import 'package:subtrack/features/dashboard/view_models/dashboard_vm.dart';
 import 'package:subtrack/features/subscriptions/view_models/subscription_details_vm.dart';
 import 'package:subtrack/features/subscriptions/view_models/subscriptions_viewmodel.dart';
@@ -15,25 +13,6 @@ Future<void> main() async {
   await setupInjection();
 
   runApp(const SubtrackApp());
-}
-
-void test() async {
-  final repository = getIt<SubscriptionRepository>();
-
-  await repository.save(
-    Subscription.create(
-      name: 'Netflix',
-      category: SubscriptionCategory.streaming,
-      price: 15.99,
-      currency: 'USD',
-      billingCycle: BillingCycle.monthly,
-      renewalDate: DateTime.now().add(const Duration(days: 30)),
-    ),
-  );
-
-  final subscriptions = await repository.getAll();
-
-  debugPrint(subscriptions.first.toJson().toString());
 }
 
 class SubtrackApp extends StatelessWidget {
@@ -47,8 +26,14 @@ class SubtrackApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SubscriptionDetailsViewModel()),
         ChangeNotifierProvider(create: (_) => SubscriptionsViewModel(repository: getIt())),
       ],
-
-      child: MaterialApp.router(debugShowCheckedModeBanner: false, routerConfig: appRouter),
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        title: 'Subtrack',
+        theme: AppTheme.light(),
+        darkTheme: AppTheme.dark(),
+        themeMode: ThemeMode.system,
+        routerConfig: appRouter,
+      ),
     );
   }
 }
