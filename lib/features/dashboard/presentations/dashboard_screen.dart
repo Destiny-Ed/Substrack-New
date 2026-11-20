@@ -79,10 +79,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         DashboardHeader(
                           summary: vm.summary,
                           onSettingsTap: () {
-                            // Navigator.pushNamed(context, AppRoutes.settings);
+                            context.push(AppRoutes.settings);
                           },
                         ),
-                        SizedBox(height: 24),
+                        const SizedBox(height: 24),
                         EmptyDashboard(
                           onAddSubscription: () {
                             context.push(AppRoutes.addSubscription);
@@ -102,7 +102,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       DashboardHeader(
                         summary: vm.summary,
                         onSettingsTap: () {
-                          // Navigator.pushNamed(context, AppRoutes.settings);
+                          context.push(AppRoutes.settings);
                         },
                       ),
 
