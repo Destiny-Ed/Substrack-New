@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'package:subtrack/core/providers/app_settings_provider.dart';
 import 'package:subtrack/core/theme/app_theme.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -14,59 +14,28 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool _notificationsEnabled = true;
-  bool _darkMode = false;
-  String _currency = 'USD';
   String _appVersion = '1.0.0';
 
   @override
   void initState() {
     super.initState();
-    _loadPreferences();
     _loadPackageInfo();
-  }
-
-  Future<void> _loadPreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _notificationsEnabled = prefs.getBool('notifications_enabled') ?? true;
-      _darkMode = prefs.getBool('dark_mode') ?? false;
-      _currency = prefs.getString('default_currency') ?? 'USD';
-    });
   }
 
   Future<void> _loadPackageInfo() async {
     final info = await PackageInfo.fromPlatform();
-    setState(() {
-      _appVersion = '${info.version} (${info.buildNumber})';
-    });
-  }
-
-  Future<void> _setNotifications(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('notifications_enabled', value);
-    setState(() => _notificationsEnabled = value);
-    HapticFeedback.lightImpact();
-  }
-
-  Future<void> _setDarkMode(bool value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('dark_mode', value);
-    setState(() => _darkMode = value);
-    HapticFeedback.lightImpact();
-  }
-
-  Future<void> _setCurrency(String value) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('default_currency', value);
-    setState(() => _currency = value);
-    HapticFeedback.selectionClick();
+    if (mounted) {
+      setState(() {
+        _appVersion = '${info.version} (${info.buildNumber})';
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final settings = context.watch<AppSettingsProvider>();
 
     return Scaffold(
       body: CustomScrollView(
@@ -75,13 +44,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           SliverAppBar(
             pinned: true,
             floating: false,
-            expandedHeight: 120,
-            leading: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
-              onPressed: () => context.pop(),
-            ),
+            expandedHeight: 100,
+            automaticallyImplyLeading: false,
             flexibleSpace: FlexibleSpaceBar(
-              titlePadding: const EdgeInsets.only(left: 56, bottom: 16),
+              titlePadding: const EdgeInsets.only(left: 20, bottom: 16),
               title: Text(
                 'Settings',
                 style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w800),
@@ -103,9 +69,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 40),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                _PremiumCard(),
+                const _PremiumCard(),
                 const SizedBox(height: 28),
-                _SectionHeader(title: 'Preferences'),
+                const _SectionHeader(title: 'Preferences'),
                 const SizedBox(height: 12),
                 _SettingsCard(
                   children: [
@@ -115,9 +81,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       title: 'Renewal Reminders',
                       subtitle: 'Get notified before subscriptions renew',
                       trailing: Switch.adaptive(
-                        value: _notificationsEnabled,
+                        value: settings.notificationsEnabled,
                         activeColor: AppColors.primary,
-                        onChanged: _setNotifications,
+                        onChanged: (v) {
+                          HapticFeedback.lightImpact();
+                          settings.setNotificationsEnabled(v);
+                        },
                       ),
                     ),
                     const _Divider(),
@@ -125,11 +94,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       icon: Icons.dark_mode_rounded,
                       iconColor: const Color(0xFF8B5CF6),
                       title: 'Dark Mode',
-                      subtitle: 'Easier on the eyes at night',
+                      subtitle: settings.themeMode == ThemeMode.system
+                          ? 'Following system'
+                          : (settings.themeMode == ThemeMode.dark ? 'On' : 'Off'),
                       trailing: Switch.adaptive(
-                        value: _darkMode,
+                        value: settings.themeMode == ThemeMode.dark ||
+                            (settings.themeMode == ThemeMode.system && isDark),
                         activeColor: AppColors.primary,
-                        onChanged: _setDarkMode,
+                        onChanged: (v) {
+                          HapticFeedback.lightImpact();
+                          settings.toggleDarkMode(v);
+                        },
                       ),
                     ),
                     const _Divider(),
@@ -137,14 +112,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       icon: Icons.attach_money_rounded,
                       iconColor: AppColors.accent,
                       title: 'Default Currency',
-                      subtitle: _currency,
+                      subtitle: settings.currency,
                       trailing: const Icon(Icons.chevron_right_rounded, size: 22),
-                      onTap: () => _showCurrencyPicker(context),
+                      onTap: () => _showCurrencyPicker(context, settings),
                     ),
                   ],
                 ),
                 const SizedBox(height: 28),
-                _SectionHeader(title: 'Data & Privacy'),
+                const _SectionHeader(title: 'Data & Privacy'),
                 const SizedBox(height: 12),
                 _SettingsCard(
                   children: [
@@ -172,7 +147,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ],
                 ),
                 const SizedBox(height: 28),
-                _SectionHeader(title: 'Support'),
+                const _SectionHeader(title: 'Support'),
                 const SizedBox(height: 12),
                 _SettingsCard(
                   children: [
@@ -202,7 +177,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ],
                 ),
                 const SizedBox(height: 28),
-                _SectionHeader(title: 'About'),
+                const _SectionHeader(title: 'About'),
                 const SizedBox(height: 12),
                 _SettingsCard(
                   children: [
@@ -257,7 +232,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  void _showCurrencyPicker(BuildContext context) {
+  void _showCurrencyPicker(BuildContext context, AppSettingsProvider settings) {
     final currencies = ['USD', 'NGN', 'EUR', 'GBP', 'CAD', 'AUD', 'INR', 'JPY'];
     showModalBottomSheet(
       context: context,
@@ -283,14 +258,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
               Text('Select Currency', style: Theme.of(context).textTheme.titleLarge),
               const SizedBox(height: 12),
               ...currencies.map((c) {
-                final selected = c == _currency;
+                final selected = c == settings.currency;
                 return ListTile(
-                  title: Text(c, style: TextStyle(fontWeight: selected ? FontWeight.w700 : FontWeight.w500)),
+                  title: Text(
+                    c,
+                    style: TextStyle(fontWeight: selected ? FontWeight.w700 : FontWeight.w500),
+                  ),
                   trailing: selected
                       ? const Icon(Icons.check_circle_rounded, color: AppColors.primary)
                       : null,
                   onTap: () {
-                    _setCurrency(c);
+                    HapticFeedback.selectionClick();
+                    settings.setCurrency(c);
                     Navigator.pop(ctx);
                   },
                 );
@@ -331,6 +310,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 }
 
 class _PremiumCard extends StatelessWidget {
+  const _PremiumCard();
+
   @override
   Widget build(BuildContext context) {
     return Container(
