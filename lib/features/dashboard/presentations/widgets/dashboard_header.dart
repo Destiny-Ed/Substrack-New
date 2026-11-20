@@ -31,28 +31,37 @@ class DashboardHeader extends StatelessWidget {
                 '${_greeting()} 👋',
                 style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700),
               ),
-
               const SizedBox(height: 8),
-
               Text(
                 _subtitle,
-                style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
               ),
             ],
           ),
         ),
-
-        InkWell(
-          borderRadius: BorderRadius.circular(18),
-          onTap: onSettingsTap,
-          child: Container(
-            height: 52,
-            width: 52,
-            decoration: BoxDecoration(
-              color: theme.colorScheme.surfaceContainerHighest,
-              borderRadius: BorderRadius.circular(18),
+        Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(16),
+            onTap: onSettingsTap,
+            child: Container(
+              height: 48,
+              width: 48,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.7),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: theme.colorScheme.outline.withValues(alpha: 0.12),
+                ),
+              ),
+              child: Icon(
+                Icons.settings_rounded,
+                color: theme.colorScheme.onSurfaceVariant,
+                size: 22,
+              ),
             ),
-            child: const Icon(Icons.settings_rounded),
           ),
         ),
       ],
