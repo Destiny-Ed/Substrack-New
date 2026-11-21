@@ -60,7 +60,6 @@ class UpcomingSubscriptionCard extends StatelessWidget {
             ),
             const SizedBox(height: 2),
 
-            const Spacer(),
 
             Text(
               subscription.name,
@@ -73,10 +72,10 @@ class UpcomingSubscriptionCard extends StatelessWidget {
 
             Text(subscription.category.name),
 
-            const SizedBox(height: 10),
+            const SizedBox(height: 5),
 
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(100),

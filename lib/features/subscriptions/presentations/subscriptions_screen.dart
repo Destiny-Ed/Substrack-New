@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:subtrack/core/navigation/app_routes.dart';
+import 'package:subtrack/features/subscriptions/presentations/add_subscription.dart';
 import 'package:subtrack/features/subscriptions/view_models/subscriptions_viewmodel.dart';
 import 'package:subtrack/features/subscriptions/widgets/empty_subscription_list.dart';
 import 'package:subtrack/features/subscriptions/widgets/subscription_filter_chip.dart';
@@ -37,9 +38,12 @@ class _SubscriptionsScreenState extends State<SubscriptionsScreen> {
 
           floatingActionButton: FloatingActionButton.extended(
             onPressed: () async {
-              final result = await Navigator.pushNamed(context, AppRoutes.addSubscription);
+               final created = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const AddSubscriptionScreen()),
+              );
 
-              if (result == true && mounted) {
+              if (created == true && mounted) {
                 vm.refresh();
               }
             },
